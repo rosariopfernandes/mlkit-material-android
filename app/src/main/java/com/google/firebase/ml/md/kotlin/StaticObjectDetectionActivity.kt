@@ -177,7 +177,7 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
                         override fun onStateChanged(bottomSheet: View, newState: Int) {
                             Log.d(TAG, "Bottom sheet new state: $newState")
                             bottomSheetScrimView?.visibility =
-                                if (newState == BottomSheetBehavior.STATE_HIDDEN) View.GONE else View.VISIBLE
+                                    if (newState == BottomSheetBehavior.STATE_HIDDEN) View.GONE else View.VISIBLE
                         }
 
                         override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -185,7 +185,7 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
                                 return
                             }
 
-                            val collapsedStateHeight = Math.min(bottomSheetBehavior!!.peekHeight, bottomSheet.height)
+                            val collapsedStateHeight = bottomSheetBehavior!!.peekHeight.coerceAtMost(bottomSheet.height)
                             val searchedObjectForBottomSheet = searchedObjectForBottomSheet
                                     ?: return
                             bottomSheetScrimView?.updateWithThumbnailTranslate(
@@ -263,7 +263,7 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
         showBottomPromptChip(getString(R.string.static_image_prompt_detected_results))
         loadingView?.visibility = View.GONE
         previewCardCarousel?.adapter =
-            PreviewCardAdapter(ImmutableList.copyOf(searchedObjectMap.values)) { showSearchResults(it) }
+                PreviewCardAdapter(ImmutableList.copyOf(searchedObjectMap.values)) { showSearchResults(it) }
         previewCardCarousel?.addOnScrollListener(
                 object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
